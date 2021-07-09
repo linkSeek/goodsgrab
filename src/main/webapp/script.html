@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>脚本管理页</title>
+    <!-- jqgrid ui -->
+    <link href="plugins/jqgrid-5.3.0/ui.jqgrid-bootstrap4.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.css">
+    <!-- sweet alert -->
+    <link rel="stylesheet" href="plugins/sweetalert/sweetalert.css">
+    <link href="plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="dist/css/main.css" rel="stylesheet"/>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="plugins/font-awesome/css/font-awesome.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <!-- sweet alert -->
+    <link rel="stylesheet" href="plugins/sweetalert/sweetalert.css">
+    <link href="plugins/custombox/custombox.min.css" rel="stylesheet">
+
+</head>
+<body class="hold-transition sidebar-mini" onLoad="checkCookie();">
+<div class="wrapper">
+
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="index.html" class="nav-link">Home</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+        </ul>
+    </nav>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="index.html" class="brand-link">
+            <img src="dist/img/logo.jpg" alt="ssm-cluster Logo" class="brand-image img-circle elevation-3"
+                 style="opacity: .8">
+            <span class="brand-text font-weight-light">noon抢车软件</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
+                    <li class="nav-header">管理模块</li>
+                    <li class="nav-item">
+                        <a href="user.html" class="nav-link">
+                            <i class="fa fa-user-circle nav-icon"></i>
+                            <p>用户管理</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="goods.html" class="nav-link">
+                            <i class="nav-icon fa fa-image"></i>
+                            <p>商品管理</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="script.html" class="nav-link active">
+                            <i class="nav-icon fa fa-image"></i>
+                            <p>脚本管理</p>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">脚本管理页</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="user.html">主页</a></li>
+                            <li class="breadcrumb-item active">脚本管理页</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+
+        <!-- Main content -->
+        <div class="content">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="grid-btn">
+                                <!--                                <button class="btn btn-info" onclick="userAdd()"><i-->
+                                <!--                                        class="fa fa-plus"></i>&nbsp;新增-->
+                                <!--                                </button>-->
+                                <button class="btn btn-warning" onclick="scriptEdit()"><i
+                                        class="fa fa-edit"></i>&nbsp;编辑
+                                </button>
+                                <button class="btn btn-file" onclick="showPriceDiffer()" id="priceDifferButton"><i
+                                        class="fa fa-upload"></i>&nbsp;调整价差
+                                </button>
+                                <!--                                <button class="btn btn-file" onclick="importV2()"><i-->
+                                <!--                                        class="fa fa-upload"></i>&nbsp;导入V2-->
+                                <!--                                </button>-->
+<!--                                <button class="btn btn-danger" onclick="userDel()"><i-->
+<!--                                        class="fa fa-remove"></i>&nbsp;删除-->
+<!--                                </button>-->
+                                <!--                                <button class="btn btn-file" onclick="window.location.href='/users/export'"><i-->
+                                <!--                                        class="fa fa-download"></i>&nbsp;导出-->
+                                <!--                                </button>-->
+                            </div>
+                            <table id="jqGrid" class="table table-bordered">
+                            </table>
+                            <div id="jqGridPager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="content" id="changePriceDiffer" style="display: none">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" style="width: 400px;height: 420px;">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="changeDiffer">修改调整价差</h6>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <div class="alert alert-danger add-error-info">错误信息展示栏。</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="priceDiffer" class="control-label">调整价差:</label>
+                                <input type="text"  class="form-control" id="priceDiffer">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" id="cancelAdd">取消</button>
+                        <button type="button" class="btn btn-primary" id="saveButton">确认</button>
+                    </div>
+                </div>
+            </div>
+            <!-- /.content -->
+        </div>
+
+        <div class="content" id="modalEdit" style="display: none">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" style="width: 400px;height: 320px;">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="modalEditLabel">脚本编辑</h6>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <input type="hidden" id="scriptId" value="0">
+                            <div class="form-group">
+                                <div class="alert alert-danger edit-error-info">错误信息展示栏。</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="intervalEdit" class="control-label">运行间隔:</label>
+                                <input type="text" placeholder="时间间隔以秒为单位，不可有小数" class="form-control" id="intervalEdit">
+                            </div>
+                            <div class="form-group">
+                                <label for="statusEdit" class="control-label">脚本状态:</label>
+                                <input type="text" placeholder="只能输入1：开启，0：关闭" class="form-control" id="statusEdit">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" id="cancelEdit">取消</button>
+                        <button type="button" class="btn btn-primary" id="editButton">确认</button>
+                    </div>
+                </div>
+            </div>
+            <!-- /.content -->
+        </div>
+
+    </div>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+        <strong>Copyright &copy; 2017-2018 <a href="##">13blog.site</a>.</strong>
+        All rights reserved.
+        <div class="float-right d-none d-sm-inline-block">
+            <b>Version</b> 2.0
+        </div>
+    </footer>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="plugins/jQueryUI/jquery-ui.min.js"></script>
+<!-- sweet alert -->
+<script src="plugins/sweetalert/sweetalert.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="plugins/jqgrid-5.3.0/grid.locale-cn.js"></script>
+<script src="plugins/jqgrid-5.3.0/jquery.jqGrid.min.js"></script>
+<script src="plugins/custombox/custombox.min.js"></script>
+<script src="plugins/custombox/custombox.legacy.min.js"></script>
+<!-- ajax upload -->
+<script src="plugins/ajaxupload/ajaxupload.js"></script>
+<script src="dist/js/public.js"></script>
+<script src="dist/js/script.js"></script>
+<script src="dist/js/adminlte.js"></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssm.demo.dao.GoodsDao">
+    <resultMap type="com.ssm.demo.entity.Goods" id="GoodsResult">
+        <result property="goodsId" column="goods_id"/>
+        <result property="goodsBackId" column="goods_back_id"/>
+        <result property="goodsName" column="goods_name"/>
+        <result property="limitedPrice" column="limited_Price"/>
+        <result property="price" column="price"/>
+        <result property="storeId" column="store_id"/>
+        <result property="storeName" column="store_name"/>
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="numberOfUpdate" column="number_of_update"/>
+    </resultMap>
+
+    <select id="getAliveGoodsByStore" parameterType="int" resultMap="GoodsResult">
+        select * from goods
+        where store_id = #{storeId} and status = 1
+    </select>
+
+    <insert id="insertGoods" parameterType="com.ssm.demo.entity.Goods">
+		insert into
+		goods(goods_id, goods_back_id, goods_name,limited_Price,store_id, store_name, create_time)
+		values(#{goodsId},#{goodsBackId},#{goodName},#{limitedPrice}, #{storeId}, #{storeName}, #{createTime})
+	</insert>
+
+    <select id="findGoodsByPages" parameterType="Map" resultMap="GoodsResult">
+        select * from goods
+        order by create_time desc
+        <if test="start!=null and limit!=null">
+            limit #{start},#{limit}
+        </if>
+    </select>
+
+    <select id="getTotalGoods" parameterType="Map" resultType="int">
+        select count(*) from goods
+    </select>
+
+    <select id="selectByGoodIdAndStore" parameterType="com.ssm.demo.entity.Goods" resultMap="GoodsResult">
+        select * from goods where  store_id = #{storeId} and goods_id = #{goodsId}
+    </select>
+
+    <insert id="insertGoodsBatch">
+        insert into goods(goods_id,goods_back_id, goods_name, limited_price, store_id, status, create_time) VALUES
+        <foreach collection="goodsList" index="index" item="goods" open="" separator="," close="">
+            (#{goods.goodsId}, #{goods.goodsBackId}, #{goods.goodsName}, #{goods.limitedPrice}, #{goods.storeId},#{goods.status}, #{goods.createTime})
+        </foreach>
+    </insert>
+
+    <update id="updateGoodsUpdateTimes" parameterType="com.ssm.demo.entity.Goods">
+		update goods
+		set
+		number_of_update = number_of_update +1 , update_time = unix_timestamp(now())
+		where goods_id=#{goodsId} and store_id = #{storeId}
+	</update>
+
+    <update id="downAllGoods" >
+		update goods set status = 0
+	</update>
+
+    <update id="upGoodsByGoodsIds">
+        update goods
+        set status = 1 where store_id = #{storeId} and goods_id in
+        <foreach item="goodsId" collection="goodsIdArray" open="(" separator="," close=")">
+            #{goodsId}
+        </foreach>
+    </update>
+
+    <update id="updateGoodsPrice">
+		update goods
+		set price = #{price}
+		where goods_id=#{goodsId}
+	</update>
+</mapper>
