@@ -14,4 +14,23 @@
         select * from store;
     </select>
 
+    <select id="findStoreByPages" parameterType="Map" resultMap="StoreResult">
+        select * from store
+        order by create_time asc
+        <if test="start!=null and limit!=null">
+            limit #{start},#{limit}
+        </if>
+    </select>
+
+    <insert id="insertStore" parameterType="com.ssm.demo.entity.Store">
+		insert into
+		store (id,name,email,password,create_time)
+		values(0,#{name},#{email},#{password}, #{createTime})
+	</insert>
+
+    <insert id="updateStorePassword" parameterType="com.ssm.demo.entity.Store">
+		update store set password = #{password}
+		where  id = #{id}
+	</insert>
+
 </mapper>

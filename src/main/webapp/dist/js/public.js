@@ -56,6 +56,21 @@ function validPassword(password) {
     }
 }
 
+/**
+ * 邮箱验证
+ *
+ * @param email
+ * @returns {boolean}
+ */
+function validEmail(email) {
+    var pattern = /^[0-9a-zA-Z_.-]+[@][0-9a-zA-Z_.-]+([.][a-zA-Z]+){1,2}$/;
+    if (pattern.test(email.trim())) {
+        return (true);
+    } else {
+        return (false);
+    }
+}
+
 <!-- 正则验证 end-->
 
 function login() {

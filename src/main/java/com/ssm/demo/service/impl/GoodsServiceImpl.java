@@ -175,6 +175,7 @@ public class GoodsServiceImpl implements GoodsService {
         try {
             // 登录该店铺
             seleniumUtil.noonLogin(driver, store);
+            seleniumUtil.closeNotice(driver);
             seleniumUtil.pageReload(driver);
 
             for (Goods goods : goodsList) {
@@ -429,6 +430,7 @@ public class GoodsServiceImpl implements GoodsService {
 
             // 登录该店铺
             seleniumUtil.noonLogin(driver, store);
+            seleniumUtil.closeNotice(driver);
             seleniumUtil.pageReload(driver);
 
             for (Goods goods : goodsList) {
@@ -513,6 +515,8 @@ public class GoodsServiceImpl implements GoodsService {
                     seleniumUtil.pageReload(driver);
                 }
             }
+        }  catch (Exception e) {
+            logger.info(Arrays.toString(e.getStackTrace()));
         } finally {
             // 退出浏览器
             driver.quit();

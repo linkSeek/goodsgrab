@@ -115,9 +115,23 @@ public class SeleniumUtil {
         searchElem.sendKeys(Keys.BACK_SPACE);
     }
 
-    public void pageReload(WebDriver driver) {
+    // 关闭公告
+    public void closeNotice(WebDriver driver) throws Exception {
         driver.get("https://catalog.noon.partners/en-ae/catalog?limits=20&page=1");
         WebDriverWait wait = new WebDriverWait(driver,20);
+
+        // 判断公告是否出现
+        try {
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"__next\"]/div/div[2]/div[3]/div/div/div[2]/div/div/div[1]/div[1]/i")));
+            driver.findElement(By.xpath("//*[@id=\"__next\"]/div/div[2]/div[3]/div/div/div[2]/div/div/div[1]/div[1]/i")).click();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void pageReload(WebDriver driver) throws Exception {
+        driver.get("https://catalog.noon.partners/en-ae/catalog?limits=20&page=1");
+        WebDriverWait wait = new WebDriverWait(driver,30);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"__next\"]/div/div[2]/div[3]/div/div/div[2]/div/div/div[3]/div/table/tbody/tr[1]/td[3]")));
     }
 

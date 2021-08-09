@@ -35,7 +35,12 @@ public class Store implements Serializable {
     /**
      * 创建时间
      */
-    private String createTime;
+    private long createTime;
+
+    /**
+     * 格式化时间
+     */
+    private String createDate;
 
 
 //    public Long getId() {

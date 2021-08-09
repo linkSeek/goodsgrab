@@ -1,6 +1,9 @@
 package com.ssm.demo.service;
 
 import com.ssm.demo.entity.Store;
+import com.ssm.demo.utils.PageResult;
+import com.ssm.demo.utils.PageUtil;
+
 import java.util.List;
 
 /**
@@ -16,5 +19,26 @@ public interface StoreService {
      * @return
      */
     List<Store> getAllStore();
+
+    /**
+     * 插入新店铺
+     *
+     * @return
+     */
+    int insertStore(Store store);
+
+    /**
+     * 更新店铺密码
+     *
+     * @return
+     */
+    int updateStorePassword(Store store);
+
+    /**
+     * 获取商品信息
+     *
+     * @return
+     */
+    PageResult getStorePage(PageUtil pageUtil);
 
 }
